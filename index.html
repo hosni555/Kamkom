@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet Address Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        #formatted-addresses {
+            margin-top: 20px;
+        }
+
+        #formatted-addresses textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        #refresh-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        #copy-button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="refresh-button" onclick="refreshPage()">Refresh</button>
+
+    <div class="container">
+        <h1>Wallet Address Formatter</h1>
+        <form id="address-form">
+            <label for="currency">Currency Type:</label>
+            <input type="text" id="currency" name="currency" placeholder="Enter currency type">
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount" placeholder="Enter amount">
+            <label for="wallet-address">Wallet Address(es):</label>
+            <textarea id="wallet-address" name="wallet-address" placeholder="Enter wallet address(es)"></textarea>
+            <button type="button" id="format-button">Format Addresses</button>
+        </form>
+        <div id="formatted-addresses">
+            <label for="formatted-results">Formatted Addresses:</label>
+            <textarea id="formatted-results" readonly></textarea>
+            <button id="copy-button" onclick="copyFormattedAddresses()">Copy Formatted Addresses</button>
+        </div>
+    </div>
+
+    <script>
+        function refreshPage() {
+            location.reload();
+        }
+
+        function copyFormattedAddresses() {
+            var formattedAddresses = document.getElementById('formatted-results');
+            formattedAddresses.select();
+            document.execCommand('copy');
+            alert('Formatted addresses copied to clipboard!');
+        }
+
+        document.getElementById('format-button').addEventListener('click', function() {
+            var currency = document.getElementById('currency').value;
+            var amount = document.getElementById('amount').value;
+            var addresses = document.getElementById('wallet-address').value.split('\n');
+            var formattedAddresses = '';
+
+            addresses.forEach(function(address) {
+                formattedAddresses += address.trim() + ',' + currency + ',' + amount + '\n';
+            });
+
+            document.getElementById('formatted-results').value = formattedAddresses.trim();
+        });
+    </script>
+</body>
+</html>
